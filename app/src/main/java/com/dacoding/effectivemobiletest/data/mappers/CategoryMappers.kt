@@ -5,12 +5,6 @@ import com.dacoding.effectivemobiletest.data.remote.dto.CategoryDto
 import com.dacoding.effectivemobiletest.domain.model.Category
 import com.dacoding.effectivemobiletest.domain.model.CategoryData
 
-fun CategoryDataDto.toCategoryData(): CategoryData {
-    return CategoryData(
-        categories = categories
-    )
-}
-
 fun CategoryDto.toCategory(): Category {
     return Category(
         id = id,
@@ -18,3 +12,9 @@ fun CategoryDto.toCategory(): Category {
         image_url = image_url
     )
 }
+
+fun CategoryDataDto.toCategoryData(): CategoryData {
+    return CategoryData(
+        categories = categories.map { it.toCategory() })
+}
+

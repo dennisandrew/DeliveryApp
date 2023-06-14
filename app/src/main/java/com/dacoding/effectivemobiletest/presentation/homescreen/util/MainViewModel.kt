@@ -1,4 +1,4 @@
-package com.dacoding.effectivemobiletest.presentation
+package com.dacoding.effectivemobiletest.presentation.homescreen.util
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TestViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val repository: CategoryRepository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(TestState())
+    var state by mutableStateOf(MainState())
 
 
     fun loadCategoryData() {
