@@ -15,11 +15,11 @@ import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.Food
 import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.FoodTags
 import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.FoodTopBar
 import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodTag
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodViewModel
+import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
 
 @Composable
 fun FoodScreen(
-    viewModel: FoodViewModel,
+    viewModel: FoodToCartSharedViewModel,
     navController: NavHostController,
     backStackEntry: NavBackStackEntry
 ) {
@@ -39,6 +39,6 @@ fun FoodScreen(
         Spacer(modifier = Modifier.height(8.dp))
         FoodTags(tags = tags, viewModel = viewModel, selectedTags = viewModel.selectedTags)
         Spacer(modifier = Modifier.height(16.dp))
-        FoodGrid(state = viewModel.state)
+        FoodGrid(viewModel = viewModel, selectedFood = viewModel.selectedFood)
     }
 }

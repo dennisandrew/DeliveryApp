@@ -11,36 +11,39 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodViewModel
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewModel
 import com.dacoding.effectivemobiletest.presentation.navigation.AppNavHost
 import com.dacoding.effectivemobiletest.presentation.navigation.BottomBar
 import com.dacoding.effectivemobiletest.presentation.ui.theme.EffectiveMobileTestTheme
+import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val foodViewModel: FoodViewModel by viewModels()
+    private val foodToCartSharedViewModel: FoodToCartSharedViewModel by viewModels()
     private lateinit var navController: NavHostController
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.loadCategoryData()
-        foodViewModel.loadFoodData()
+        foodToCartSharedViewModel.loadFoodData()
+
         setContent {
             EffectiveMobileTestTheme {
                 navController = rememberNavController()
-                Surface(color = MaterialTheme.colorScheme.background) {
+                Surface(color = MaterialTheme.colorScheme.surface) {
                     Scaffold(
-                        bottomBar = { BottomBar(navController = navController) }
+                        bottomBar = {
+                            BottomBar(navController = navController)
+                        }
                     ) {
                         AppNavHost(
                             navHostController = navController,
                             mainViewModel = mainViewModel,
-                            foodViewModel = foodViewModel
+                            foodToCartSharedViewModel = foodToCartSharedViewModel,
                         )
                     }
                 }

@@ -10,9 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.dacoding.effectivemobiletest.presentation.cartscreen.CartScreen
 import com.dacoding.effectivemobiletest.presentation.foodscreen.FoodScreen
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodViewModel
 import com.dacoding.effectivemobiletest.presentation.homescreen.MainScreen
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewModel
+import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
 
 @Composable
 fun AppNavHost(
@@ -20,7 +20,7 @@ fun AppNavHost(
     navHostController: NavHostController,
     startDestination: String = "main",
     mainViewModel: MainViewModel,
-    foodViewModel: FoodViewModel
+    foodToCartSharedViewModel: FoodToCartSharedViewModel,
 ) {
     NavHost(
         modifier = modifier,
@@ -39,14 +39,14 @@ fun AppNavHost(
         ) {
             Log.d("ARGS", it.arguments?.getString("category_name").toString())
             FoodScreen(
-                viewModel = foodViewModel,
+                viewModel = foodToCartSharedViewModel,
                 navController = navHostController,
                 backStackEntry = it
             )
         }
 
         composable(route = BottomBarScreen.Cart.route) {
-            CartScreen()
+            CartScreen(navController = navHostController, viewModel = foodToCartSharedViewModel)
         }
     }
 }

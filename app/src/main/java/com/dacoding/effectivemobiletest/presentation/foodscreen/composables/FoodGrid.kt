@@ -1,5 +1,6 @@
 package com.dacoding.effectivemobiletest.presentation.foodscreen.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,16 +32,19 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodState
+import com.dacoding.effectivemobiletest.domain.model.Food
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodEvent
+import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
 
 @Composable
-fun FoodGrid(state: FoodState) {
-
+fun FoodGrid(
+    viewModel: FoodToCartSharedViewModel,
+    selectedFood: MutableState<Food?>
+) {
+    val state = viewModel.foodState
     val selectedTagsStrings = mutableListOf<String>()
     state.selectedTags.forEach { selectedTagsStrings.add(it.name) }
-
-
-
+    val openDialog = remember { mutableStateOf(false) }
     state.foodData?.dishes?.let { data ->
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
@@ -50,10 +57,15 @@ fun FoodGrid(state: FoodState) {
                             foodData.tegs.contains(tag)
                         }
                     }) { foodData ->
-
                     Column(
                         modifier = Modifier
                             .padding(bottom = 14.dp)
+                            .clickable {
+                                selectedFood.value = foodData
+                                viewModel.onFoodEvent(foodEvent = FoodEvent.ClickOnItem)
+                                openDialog.value = true
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Card(
                             modifier = Modifier.size(109.dp),
@@ -90,5 +102,7 @@ fun FoodGrid(state: FoodState) {
                 }
             }
         )
+        if (openDialog.value)
+            FoodDialog(openDialog = openDialog, viewModel = viewModel, cartFood = viewModel.cartFood)
     }
 }

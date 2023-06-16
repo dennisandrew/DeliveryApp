@@ -1,4 +1,4 @@
-package com.dacoding.effectivemobiletest.presentation.foodscreen.util
+package com.dacoding.effectivemobiletest.presentation.util
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -9,40 +9,71 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dacoding.effectivemobiletest.domain.repository.Repository
 import com.dacoding.effectivemobiletest.domain.util.Resource
+import com.dacoding.effectivemobiletest.presentation.cartscreen.util.CartState
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodEvent
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodState
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodTag
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FoodViewModel @Inject constructor(
+class FoodToCartSharedViewModel @Inject constructor(
     private val repository: Repository,
 ) : ViewModel() {
 
-    var state by mutableStateOf(FoodState())
+    var foodState by mutableStateOf(FoodState())
+
+    var cartState by mutableStateOf(CartState())
 
     val selectedTags = mutableStateListOf<FoodTag>(FoodTag.AllMenu)
 
-    fun onEvent(foodEvent: FoodEvent) {
+    val selectedFood = mutableStateOf(foodState.food)
+
+    val cartFood = mutableStateOf(cartState.cartFood)
+
+    fun onFoodEvent(foodEvent: FoodEvent) {
         when (foodEvent) {
             is FoodEvent.SelectTag -> {
                 Log.d("FOOD_EVENT", "tag was selected")
-                state = state.copy(
+                foodState = foodState.copy(
                     selectedTags = selectedTags
                 )
                 Log.d(
                     "FOOD_EVENT",
-                    "Current tags state size is: ${state.selectedTags.size}"
+                    "Current tags state size is: ${foodState.selectedTags.size}"
                 )
             }
 
             is FoodEvent.UnselectTag -> {
                 Log.d("FOOD_EVENT", "tag was unselected")
-                state = state.copy(
+                foodState = foodState.copy(
                     selectedTags = selectedTags
                 )
                 Log.d(
                     "FOOD_EVENT",
-                    "Current tags state size is: ${state.selectedTags.size}"
+                    "Current tags state size is: ${foodState.selectedTags.size}"
+                )
+            }
+
+            is FoodEvent.ClickOnItem -> {
+                foodState = foodState.copy(
+                    food = selectedFood.value
+                )
+                Log.d(
+                    "FOOD_EVENT",
+                    "Current food state image url is ${foodState.food?.image_url}"
+                )
+            }
+
+            is FoodEvent.AddToCart -> {
+                cartState = cartState.copy(
+                    cartFood = cartFood.value,
+                )
+
+                Log.d(
+                    "FOOD_EVENT",
+                    "Current cart size is ${cartState.cartFood.size}"
                 )
             }
         }
@@ -50,7 +81,7 @@ class FoodViewModel @Inject constructor(
 
     fun loadFoodData() {
         viewModelScope.launch {
-            state = state.copy(
+            foodState = foodState.copy(
                 isLoading = true,
                 error = null
             )
@@ -58,7 +89,7 @@ class FoodViewModel @Inject constructor(
                 val result = repository.getFoodData()
             ) {
                 is Resource.Success -> {
-                    state = state.copy(
+                    foodState = foodState.copy(
                         foodData = result.data,
                         isLoading = false,
                         error = null
@@ -67,7 +98,7 @@ class FoodViewModel @Inject constructor(
                 }
 
                 is Resource.Error -> {
-                    state = state.copy(
+                    foodState = foodState.copy(
                         foodData = null,
                         isLoading = false,
                         error = result.message

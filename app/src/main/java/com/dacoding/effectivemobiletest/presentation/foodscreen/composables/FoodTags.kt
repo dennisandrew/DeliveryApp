@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodEvent
 import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodTag
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodViewModel
+import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
 
 @Composable
 fun FoodTags(
-    viewModel: FoodViewModel,
+    viewModel: FoodToCartSharedViewModel,
     tags: List<FoodTag>,
     selectedTags: SnapshotStateList<FoodTag>
 
@@ -39,18 +39,18 @@ fun FoodTags(
                             if (!selectedTags.contains(it)) {
                                 if (it.name != FoodTag.AllMenu.name) {
                                     selectedTags.add(it)
-                                    viewModel.onEvent(foodEvent = FoodEvent.SelectTag)
+                                    viewModel.onFoodEvent(foodEvent = FoodEvent.SelectTag)
                                     selectedTags.remove(FoodTag.AllMenu)
-                                    viewModel.onEvent(foodEvent = FoodEvent.UnselectTag)
+                                    viewModel.onFoodEvent(foodEvent = FoodEvent.UnselectTag)
                                 }
 
                             } else {
                                 if (it.name != FoodTag.AllMenu.name) {
                                     selectedTags.remove(it)
-                                    viewModel.onEvent(foodEvent = FoodEvent.UnselectTag)
+                                    viewModel.onFoodEvent(foodEvent = FoodEvent.UnselectTag)
                                     if (selectedTags.size == 0) {
                                         selectedTags.add(FoodTag.AllMenu)
-                                        viewModel.onEvent(foodEvent = FoodEvent.SelectTag)
+                                        viewModel.onFoodEvent(foodEvent = FoodEvent.SelectTag)
                                     }
                                 }
 

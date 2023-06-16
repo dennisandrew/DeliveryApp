@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
@@ -24,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    ) {
+) {
     val screens = listOf(
         BottomBarScreen.Main,
         BottomBarScreen.Search,
@@ -37,7 +38,8 @@ fun BottomBar(
 
     BottomAppBar(
         modifier = Modifier.height(88.dp),
-        containerColor = Color(0xFFFFFFFF)
+        tonalElevation = 0.dp,
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         screens.forEach { screen ->
             AddItem(
