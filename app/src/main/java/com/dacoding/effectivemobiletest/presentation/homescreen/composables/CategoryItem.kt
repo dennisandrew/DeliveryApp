@@ -1,5 +1,6 @@
 package com.dacoding.effectivemobiletest.presentation.homescreen.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,16 +18,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.dacoding.effectivemobiletest.domain.model.Category
+import com.dacoding.effectivemobiletest.presentation.navigation.CategoryItemScreen
 
 @Composable
-fun CardItem(
-    categoryData: Category
+fun CategoryItem(
+    categoryData: Category,
+    navController: NavHostController,
 ) {
+    val categoryName = categoryData.name
     Card(
         modifier = Modifier
-            .height(148.dp),
+            .height(148.dp)
+            .clickable {
+                navController.navigate(route = CategoryItemScreen.Food.route + categoryName) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
+            },
         shape = RoundedCornerShape(10.dp)
     ) {
         Box(

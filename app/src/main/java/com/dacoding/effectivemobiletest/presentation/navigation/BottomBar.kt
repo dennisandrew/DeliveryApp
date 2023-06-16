@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
@@ -23,7 +24,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomBar(
     navController: NavHostController,
-
     ) {
     val screens = listOf(
         BottomBarScreen.Main,
@@ -74,7 +74,10 @@ fun RowScope.AddItem(
         } == true,
         onClick = {
             if (screen.route == "main" || screen.route == "cart")
-                navController.navigate(screen.route)
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
         }
     )
 }

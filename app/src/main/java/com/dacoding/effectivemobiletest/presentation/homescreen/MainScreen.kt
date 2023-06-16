@@ -10,17 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dacoding.effectivemobiletest.presentation.homescreen.composables.CardItemsColumn
-import com.dacoding.effectivemobiletest.presentation.homescreen.composables.TopItem
+import androidx.navigation.NavHostController
+import com.dacoding.effectivemobiletest.presentation.homescreen.composables.CategoryItemsColumn
+import com.dacoding.effectivemobiletest.presentation.homescreen.composables.CategoryTopBar
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    navController: NavHostController
 ) {
-//    val isRefreshing = viewModel.state.isRefreshing
-//     Swipe refresh state
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,8 +32,8 @@ fun MainScreen(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopItem()
+        CategoryTopBar()
         Spacer(modifier = Modifier.height(14.dp))
-        CardItemsColumn(state = viewModel.state)
+        CategoryItemsColumn(state = viewModel.state, navController = navController)
     }
 }

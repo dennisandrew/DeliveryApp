@@ -5,15 +5,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainState
 
 @Composable
-fun CardItemsColumn(state: MainState) {
+fun CategoryItemsColumn(state: MainState, navController: NavHostController) {
     state.categoryData?.categories?.let { data ->
         LazyColumn(
             content = {
                 items(data) { categoryData ->
-                    CardItem(categoryData = categoryData)
+                    CategoryItem(categoryData = categoryData, navController = navController)
                 }
                       },
             verticalArrangement = Arrangement.spacedBy(8.dp)

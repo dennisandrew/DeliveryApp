@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodViewModel
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewModel
 import com.dacoding.effectivemobiletest.presentation.navigation.AppNavHost
 import com.dacoding.effectivemobiletest.presentation.navigation.BottomBar
@@ -21,13 +22,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
+    private val foodViewModel: FoodViewModel by viewModels()
     private lateinit var navController: NavHostController
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.loadCategoryData()
-
+        foodViewModel.loadFoodData()
         setContent {
             EffectiveMobileTestTheme {
                 navController = rememberNavController()
@@ -35,9 +37,12 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = { BottomBar(navController = navController) }
                     ) {
-                        AppNavHost(navHostController = navController, mainViewModel = mainViewModel)
+                        AppNavHost(
+                            navHostController = navController,
+                            mainViewModel = mainViewModel,
+                            foodViewModel = foodViewModel
+                        )
                     }
-
                 }
             }
         }

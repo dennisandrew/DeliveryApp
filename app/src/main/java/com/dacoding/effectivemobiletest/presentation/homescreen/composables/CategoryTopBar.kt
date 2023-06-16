@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @Composable
-fun TopItem() {
+fun CategoryTopBar() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -73,16 +73,20 @@ fun TopItem() {
 @SuppressLint("SimpleDateFormat")
 fun getCurrentDate(): String {
     val calendar = Calendar.getInstance()
+    val dayFormat = SimpleDateFormat("dd")
     val monthFormat = SimpleDateFormat("MMMM")
+    val yearFormat = SimpleDateFormat("yyyy")
+    val day = dayFormat.format(calendar.time)
     val month = monthFormat.format(calendar.time)
-    val dateFormat = SimpleDateFormat("dd ${month.replaceFirstChar { it.uppercase() }}, yyyy")
-    return dateFormat.format(calendar.time)
+    val year = yearFormat.format(calendar.time)
+
+    return "$day ${month.replaceFirstChar { it.uppercase() }}, $year"
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TopItemPreview() {
     EffectiveMobileTestTheme {
-        TopItem()
+        CategoryTopBar()
     }
 }

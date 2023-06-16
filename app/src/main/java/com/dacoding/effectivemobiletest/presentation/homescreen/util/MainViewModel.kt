@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dacoding.effectivemobiletest.domain.repository.CategoryRepository
+import com.dacoding.effectivemobiletest.domain.repository.Repository
 import com.dacoding.effectivemobiletest.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,11 +14,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: CategoryRepository,
+    private val repository: Repository,
 ) : ViewModel() {
 
     var state by mutableStateOf(MainState())
-
 
     fun loadCategoryData() {
         viewModelScope.launch {

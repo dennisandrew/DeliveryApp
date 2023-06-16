@@ -15,6 +15,7 @@ fun CategoryDto.toCategory(): Category {
 
 fun CategoryDataDto.toCategoryData(): CategoryData {
     return CategoryData(
-        categories = categories.map { it.toCategory() })
+        categories = categories.map { it.toCategory() }
+    )
 }
 
