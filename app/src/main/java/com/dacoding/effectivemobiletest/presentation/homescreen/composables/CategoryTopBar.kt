@@ -41,7 +41,8 @@ fun CategoryTopBar() {
                         .size(24.dp)
                         .padding(top = 4.dp),
                     painter = painterResource(id = R.drawable.ic_location),
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = Color.Black
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Column {
@@ -49,6 +50,7 @@ fun CategoryTopBar() {
                         text = "Санкт-Петербург",
                         fontSize = 18.sp,
                         fontWeight = FontWeight(500),
+                        color = Color.Black
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(

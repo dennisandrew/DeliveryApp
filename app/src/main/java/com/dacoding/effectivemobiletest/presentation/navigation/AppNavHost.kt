@@ -46,7 +46,7 @@ fun AppNavHost(
         }
 
         composable(route = BottomBarScreen.Cart.route) {
-            CartScreen(viewModel = foodToCartSharedViewModel, navController = navHostController)
+            CartScreen(viewModel = foodToCartSharedViewModel)
         }
     }
 }

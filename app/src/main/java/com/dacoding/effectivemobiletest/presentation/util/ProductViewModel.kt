@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val repository: com.dacoding.domain.repository.Repository,
+    private val repository: Repository,
 ) : ViewModel() {
 
     private val foodState = MutableStateFlow(FoodState())
@@ -76,7 +76,10 @@ class ProductViewModel @Inject constructor(
             is FoodEvent.AddToCart -> {
                 cartState.value = cartState.value.copy(
                     cartFood = cartState.value.cartFood.toMutableList().apply {
-                        add(Product(food = foodEvent.food, 1))
+                        find { it.food == foodEvent.food }?.let { it.count += 1 }
+                            ?: run {
+                                add(Product(food = foodEvent.food, 1))
+                            }
                     }.toList(),
                     sum = cartState.value.sum + foodEvent.food.price
                 )
@@ -184,7 +187,7 @@ class ProductViewModel @Inject constructor(
             when (
                 val result = repository.getFoodData()
             ) {
-                is com.dacoding.domain.util.Resource.Success -> {
+                is Resource.Success -> {
                     foodState.value = foodState.value.copy(
                         foodData = result.data,
                         isLoading = false,
@@ -196,7 +199,7 @@ class ProductViewModel @Inject constructor(
                     )
                 }
 
-                is com.dacoding.domain.util.Resource.Error -> {
+                is Resource.Error -> {
                     foodState.value = foodState.value.copy(
                         foodData = null,
                         isLoading = false,

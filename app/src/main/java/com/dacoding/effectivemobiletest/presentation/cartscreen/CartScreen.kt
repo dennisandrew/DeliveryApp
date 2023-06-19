@@ -15,15 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.dacoding.effectivemobiletest.presentation.cartscreen.composables.CartColumn
 import com.dacoding.effectivemobiletest.presentation.cartscreen.composables.CartTopBar
 import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun CartScreen(
-    viewModel: ProductViewModel,
-    navController: NavHostController
+    viewModel: ProductViewModel
 ) {
     val state = viewModel.toConsumableCartState().collectAsState()
     Column(
