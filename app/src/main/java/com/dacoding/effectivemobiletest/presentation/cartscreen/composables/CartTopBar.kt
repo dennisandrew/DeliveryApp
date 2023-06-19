@@ -27,9 +27,11 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @Composable
-fun CartTopBar() {
+fun CartTopBar(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Box {

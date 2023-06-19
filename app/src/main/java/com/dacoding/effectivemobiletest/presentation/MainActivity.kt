@@ -15,14 +15,14 @@ import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewMod
 import com.dacoding.effectivemobiletest.presentation.navigation.AppNavHost
 import com.dacoding.effectivemobiletest.presentation.navigation.BottomBar
 import com.dacoding.effectivemobiletest.presentation.ui.theme.EffectiveMobileTestTheme
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private val foodToCartSharedViewModel: FoodToCartSharedViewModel by viewModels()
+    private val foodToCartSharedViewModel: ProductViewModel by viewModels()
     private lateinit var navController: NavHostController
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

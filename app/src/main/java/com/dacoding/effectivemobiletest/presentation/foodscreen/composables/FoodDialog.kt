@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -21,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,29 +36,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.dacoding.effectivemobiletest.R
-import com.dacoding.effectivemobiletest.domain.model.Food
 import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodEvent
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodState
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun FoodDialog(
-    viewModel: FoodToCartSharedViewModel,
+    viewModel: ProductViewModel,
+    state: State<FoodState>,
     openDialog: MutableState<Boolean>,
-    cartFood: MutableState<MutableList<Food>>
 ) {
-    val state = viewModel.foodState
 
-    if (state.error == null) {
+    if (state.value.error == null) {
         AlertDialog(
             modifier = Modifier
-                .width(343.dp)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(15.dp)),
             onDismissRequest = {
                 openDialog.value = false
             },
             containerColor = Color.White,
             title = {
-                state.food?.let { food ->
+                state.value.selectedFood?.let { food ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -127,7 +126,7 @@ fun FoodDialog(
             text = {
                 Column {
                     Text(
-                        text = state.food?.name ?: "",
+                        text = state.value.selectedFood?.name ?: "",
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight(500),
                         fontSize = 16.sp,
@@ -136,7 +135,7 @@ fun FoodDialog(
                     Spacer(modifier = Modifier.height(8.dp))
                     Row {
                         Text(
-                            text = "${state.food?.price} ₽",
+                            text = "${state.value.selectedFood?.price} ₽",
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight(400),
                             fontSize = 14.sp,
@@ -146,7 +145,7 @@ fun FoodDialog(
                         Text(
                             modifier = Modifier
                                 .alpha(0.5f),
-                            text = " · ${state.food?.weight}г",
+                            text = " · ${state.value.selectedFood?.weight}г",
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight(400),
                             fontSize = 14.sp,
@@ -158,7 +157,7 @@ fun FoodDialog(
                     Text(
                         modifier = Modifier
                             .alpha(0.65f),
-                        text = state.food?.description ?: "",
+                        text = state.value.selectedFood?.description ?: "",
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight(400),
                         fontSize = 14.sp,
@@ -176,8 +175,7 @@ fun FoodDialog(
                 ) {
                     Button(
                         onClick = {
-                            cartFood.value.add(state.food!!)
-                            viewModel.onFoodEvent(foodEvent = FoodEvent.AddToCart)
+                            viewModel.onFoodEvent(foodEvent = FoodEvent.AddToCart(state.value.selectedFood!!))
                             openDialog.value = false
                         }
                     ) {

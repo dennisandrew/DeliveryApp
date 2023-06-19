@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -14,16 +15,15 @@ import androidx.navigation.NavHostController
 import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.FoodGrid
 import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.FoodTags
 import com.dacoding.effectivemobiletest.presentation.foodscreen.composables.FoodTopBar
-import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodTag
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun FoodScreen(
-    viewModel: FoodToCartSharedViewModel,
+    viewModel: ProductViewModel,
     navController: NavHostController,
     backStackEntry: NavBackStackEntry
 ) {
-    val tags = listOf(FoodTag.AllMenu, FoodTag.Salad, FoodTag.WithRice, FoodTag.WithFish)
+    val state = viewModel.toConsumableFoodState().collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,8 +37,8 @@ fun FoodScreen(
     ) {
         FoodTopBar(navBackStackEntry = backStackEntry, navController = navController)
         Spacer(modifier = Modifier.height(8.dp))
-        FoodTags(tags = tags, viewModel = viewModel, selectedTags = viewModel.selectedTags)
+        FoodTags(viewModel = viewModel, state = state)
         Spacer(modifier = Modifier.height(16.dp))
-        FoodGrid(viewModel = viewModel, selectedFood = viewModel.selectedFood)
+        FoodGrid(viewModel = viewModel, state = state)
     }
 }

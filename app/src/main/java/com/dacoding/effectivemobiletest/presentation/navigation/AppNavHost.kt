@@ -12,7 +12,7 @@ import com.dacoding.effectivemobiletest.presentation.cartscreen.CartScreen
 import com.dacoding.effectivemobiletest.presentation.foodscreen.FoodScreen
 import com.dacoding.effectivemobiletest.presentation.homescreen.MainScreen
 import com.dacoding.effectivemobiletest.presentation.homescreen.util.MainViewModel
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun AppNavHost(
@@ -20,7 +20,7 @@ fun AppNavHost(
     navHostController: NavHostController,
     startDestination: String = "main",
     mainViewModel: MainViewModel,
-    foodToCartSharedViewModel: FoodToCartSharedViewModel,
+    foodToCartSharedViewModel: ProductViewModel,
 ) {
     NavHost(
         modifier = modifier,
@@ -46,7 +46,7 @@ fun AppNavHost(
         }
 
         composable(route = BottomBarScreen.Cart.route) {
-            CartScreen(navController = navHostController, viewModel = foodToCartSharedViewModel)
+            CartScreen(viewModel = foodToCartSharedViewModel, navController = navHostController)
         }
     }
 }

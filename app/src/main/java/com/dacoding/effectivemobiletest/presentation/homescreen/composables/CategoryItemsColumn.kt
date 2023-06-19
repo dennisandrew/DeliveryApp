@@ -16,7 +16,7 @@ fun CategoryItemsColumn(state: MainState, navController: NavHostController) {
                 items(data) { categoryData ->
                     CategoryItem(categoryData = categoryData, navController = navController)
                 }
-                      },
+            },
             verticalArrangement = Arrangement.spacedBy(8.dp)
         )
     }

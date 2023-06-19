@@ -18,7 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,20 +32,17 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.dacoding.effectivemobiletest.domain.model.Food
 import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodEvent
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.foodscreen.util.FoodState
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun FoodGrid(
-    viewModel: FoodToCartSharedViewModel,
-    selectedFood: MutableState<Food?>
+    viewModel: ProductViewModel,
+    state: State<FoodState>
 ) {
-    val state = viewModel.foodState
-    val selectedTagsStrings = mutableListOf<String>()
-    state.selectedTags.forEach { selectedTagsStrings.add(it.name) }
     val openDialog = remember { mutableStateOf(false) }
-    state.foodData?.dishes?.let { data ->
+    state.value.foodData?.dishes?.let { data ->
         LazyVerticalGrid(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -53,22 +50,22 @@ fun FoodGrid(
             content = {
                 items(
                     data.filter { foodData ->
-                        selectedTagsStrings.any { tag ->
-                            foodData.tegs.contains(tag)
+                        state.value.selectedTags.any { tag ->
+                            foodData.tegs.contains(tag.name)
                         }
                     }) { foodData ->
                     Column(
                         modifier = Modifier
                             .padding(bottom = 14.dp)
                             .clickable {
-                                selectedFood.value = foodData
-                                viewModel.onFoodEvent(foodEvent = FoodEvent.ClickOnItem)
+                                viewModel.onFoodEvent(foodEvent = FoodEvent.ClickOnItem(foodData))
                                 openDialog.value = true
                             },
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Card(
-                            modifier = Modifier.size(109.dp),
+                            modifier = Modifier
+                                .size(109.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor = Color(0xFFF8F7F5),
                             ),
@@ -103,6 +100,10 @@ fun FoodGrid(
             }
         )
         if (openDialog.value)
-            FoodDialog(openDialog = openDialog, viewModel = viewModel, cartFood = viewModel.cartFood)
+            FoodDialog(
+                openDialog = openDialog,
+                viewModel = viewModel,
+                state = state
+            )
     }
 }

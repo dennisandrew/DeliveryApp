@@ -1,13 +1,13 @@
 package com.dacoding.effectivemobiletest.presentation.cartscreen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -18,13 +18,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.dacoding.effectivemobiletest.presentation.cartscreen.composables.CartColumn
 import com.dacoding.effectivemobiletest.presentation.cartscreen.composables.CartTopBar
-import com.dacoding.effectivemobiletest.presentation.util.FoodToCartSharedViewModel
+import com.dacoding.effectivemobiletest.presentation.util.ProductViewModel
 
 @Composable
 fun CartScreen(
-    viewModel: FoodToCartSharedViewModel,
+    viewModel: ProductViewModel,
     navController: NavHostController
 ) {
+    val state = viewModel.toConsumableCartState().collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -34,10 +35,11 @@ fun CartScreen(
                 end = 16.dp,
                 bottom = 88.dp
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        CartTopBar()
-        if (viewModel.cartState.cartFood.isEmpty()) {
+        CartTopBar(modifier = Modifier.padding(bottom = 22.dp))
+        if (state.value.cartFood.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -51,18 +53,13 @@ fun CartScreen(
                 )
             }
         } else {
-//            val cartStringList = mutableListOf<String>()
-//                viewModel.cartState.cartFood.forEach {
-//                cartStringList.add(it.name)
-//            }
-//
-//
-//            Text(text = cartStringList.joinToString(separator = ", "))
-            Spacer(modifier = Modifier.height(22.dp))
-            CartColumn(state = viewModel.cartState, navController = navController)
-
-
+            CartColumn(
+                viewModel = viewModel,
+                state = state
+            )
         }
-
     }
 }
+
+
+

@@ -1,6 +1,8 @@
 package com.dacoding.effectivemobiletest.presentation.cartscreen.composables
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.dacoding.effectivemobiletest.R
-import com.dacoding.effectivemobiletest.domain.model.Food
+import com.dacoding.effectivemobiletest.presentation.cartscreen.util.Product
 
 @Composable
-fun CartPosition(
-    foodInfo: Food
+fun CartItem(
+    item: Product,
+    addClick: (item: Product) -> Unit,
+    minusClick: (item: Product) -> Unit,
+    removeClick: (item: Product) -> Unit
 ) {
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -57,14 +63,14 @@ fun CartPosition(
                         modifier = Modifier
                             .size(55.dp)
                             .padding(start = 10.dp, top = 10.dp),
-                        model = foodInfo.image_url,
+                        model = item.food.image_url,
                         contentDescription = null,
                         contentScale = ContentScale.Fit
                     )
                 }
                 Column {
                     Text(
-                        text = foodInfo.name,
+                        text = item.food.name,
                         fontWeight = FontWeight(400),
                         fontSize = 14.sp,
                         color = Color.Black,
@@ -72,7 +78,7 @@ fun CartPosition(
                     )
                     Row {
                         Text(
-                            text = "${foodInfo.price} ₽",
+                            text = "${item.food.price} ₽",
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight(400),
                             fontSize = 14.sp,
@@ -81,7 +87,7 @@ fun CartPosition(
                         Text(
                             modifier = Modifier
                                 .alpha(0.5f),
-                            text = " · ${foodInfo.weight}г",
+                            text = " · ${item.food.weight}г",
                             textAlign = TextAlign.Start,
                             fontWeight = FontWeight(400),
                             fontSize = 14.sp,
@@ -90,10 +96,8 @@ fun CartPosition(
                         )
                     }
                 }
-
             }
         }
-
         Box(
             modifier = Modifier
                 .size(width = 100.dp, height = 32.dp)
@@ -107,6 +111,16 @@ fun CartPosition(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
+                    modifier = Modifier.clickable {
+                        minusClick(item)
+                        if (item.count <= 0) {
+                            removeClick(item)
+                        }
+                        Log.d(
+                            "CART_ITEM",
+                            "This position food count is: ${item.count}"
+                        )
+                    },
                     painter = painterResource(id = R.drawable.ic_minus),
                     contentDescription = null,
                     tint = Color.Black
@@ -116,7 +130,7 @@ fun CartPosition(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "1",
+                        text = item.count.toString(),
                         fontWeight = FontWeight(500),
                         fontSize = 14.sp,
                         color = Color.Black,
@@ -124,10 +138,17 @@ fun CartPosition(
                     )
                 }
                 Icon(
+                    modifier = Modifier.clickable {
+                        addClick(item)
+
+                        Log.d(
+                            "CART_ITEM",
+                            "This position food count is: ${item.count}"
+                        )
+                    },
                     painter = painterResource(id = R.drawable.ic_plus),
                     contentDescription = null,
                     tint = Color.Black
-
                 )
             }
         }
