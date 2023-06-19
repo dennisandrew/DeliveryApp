@@ -1,6 +1,6 @@
 package com.dacoding.effectivemobiletest.presentation.cartscreen.util
 
-import com.dacoding.effectivemobiletest.domain.model.Food
+import com.dacoding.domain.model.Food
 
 data class CartState(
     val cartFood: List<Product> = emptyList(),
@@ -11,7 +11,7 @@ data class CartState(
 )
 
 data class Product(
-    val food: Food,
+    val food: com.dacoding.domain.model.Food,
     var count: Int
 )
 

@@ -1,7 +1,5 @@
 package com.dacoding.effectivemobiletest.di
 
-import com.dacoding.effectivemobiletest.data.remote.CategoryApi
-import com.dacoding.effectivemobiletest.data.remote.FoodApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +15,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCategoryApi(): CategoryApi {
+    fun provideCategoryApi(): com.dacoding.data.remote.CategoryApi {
         return Retrofit.Builder()
             .baseUrl("https://run.mocky.io/")
             .addConverterFactory(MoshiConverterFactory.create())
@@ -27,7 +25,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFoodApi(): FoodApi {
+    fun provideFoodApi(): com.dacoding.data.remote.FoodApi {
         return Retrofit.Builder()
             .baseUrl("https://run.mocky.io/")
             .addConverterFactory(MoshiConverterFactory.create())

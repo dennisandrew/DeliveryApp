@@ -1,11 +1,11 @@
 package com.dacoding.effectivemobiletest.presentation.foodscreen.util
 
-import com.dacoding.effectivemobiletest.domain.model.Food
-import com.dacoding.effectivemobiletest.domain.model.FoodData
+import com.dacoding.domain.model.Food
+import com.dacoding.domain.model.FoodData
 
 data class FoodState(
-    val foodData: FoodData? = null,
-    val selectedFood: Food? = null,
+    val foodData: com.dacoding.domain.model.FoodData? = null,
+    val selectedFood: com.dacoding.domain.model.Food? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
     val isRefreshing: Boolean = false,

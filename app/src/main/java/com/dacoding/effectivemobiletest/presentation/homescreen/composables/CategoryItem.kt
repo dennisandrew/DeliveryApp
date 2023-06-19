@@ -16,17 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.dacoding.effectivemobiletest.domain.model.Category
 import com.dacoding.effectivemobiletest.presentation.navigation.CategoryItemScreen
 
 @Composable
 fun CategoryItem(
-    categoryData: Category,
+    categoryData: com.dacoding.domain.model.Category,
     navController: NavHostController,
 ) {
     val categoryName = categoryData.name
@@ -61,7 +61,9 @@ fun CategoryItem(
                     text = categoryData.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight(500),
-                    color = Color.Black
+                    color = Color.Black,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }

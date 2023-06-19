@@ -6,15 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dacoding.effectivemobiletest.domain.repository.Repository
-import com.dacoding.effectivemobiletest.domain.util.Resource
+import com.dacoding.domain.repository.Repository
+import com.dacoding.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: Repository,
+    private val repository: com.dacoding.domain.repository.Repository,
 ) : ViewModel() {
 
     var state by mutableStateOf(MainState())
@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor(
             when (
                 val result = repository.getCategoryData()
             ) {
-                is Resource.Success -> {
+                is com.dacoding.domain.util.Resource.Success -> {
                     state = state.copy(
                         categoryData = result.data,
                         isLoading = false,
@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
                     Log.d("SUCCESS_LOG", "Result is: ${result.data.toString()}")
                 }
 
-                is Resource.Error -> {
+                is com.dacoding.domain.util.Resource.Error -> {
                     state = state.copy(
                         categoryData = null,
                         isLoading = false,

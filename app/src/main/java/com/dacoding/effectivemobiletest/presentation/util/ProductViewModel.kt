@@ -3,8 +3,8 @@ package com.dacoding.effectivemobiletest.presentation.util
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dacoding.effectivemobiletest.domain.repository.Repository
-import com.dacoding.effectivemobiletest.domain.util.Resource
+import com.dacoding.domain.repository.Repository
+import com.dacoding.domain.util.Resource
 import com.dacoding.effectivemobiletest.presentation.cartscreen.util.CartEvent
 import com.dacoding.effectivemobiletest.presentation.cartscreen.util.CartState
 import com.dacoding.effectivemobiletest.presentation.cartscreen.util.Product
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
-    private val repository: Repository,
+    private val repository: com.dacoding.domain.repository.Repository,
 ) : ViewModel() {
 
     private val foodState = MutableStateFlow(FoodState())
@@ -184,7 +184,7 @@ class ProductViewModel @Inject constructor(
             when (
                 val result = repository.getFoodData()
             ) {
-                is Resource.Success -> {
+                is com.dacoding.domain.util.Resource.Success -> {
                     foodState.value = foodState.value.copy(
                         foodData = result.data,
                         isLoading = false,
@@ -196,7 +196,7 @@ class ProductViewModel @Inject constructor(
                     )
                 }
 
-                is Resource.Error -> {
+                is com.dacoding.domain.util.Resource.Error -> {
                     foodState.value = foodState.value.copy(
                         foodData = null,
                         isLoading = false,
